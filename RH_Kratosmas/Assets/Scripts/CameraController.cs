@@ -6,6 +6,7 @@ public class CameraController : MonoBehaviour
 {
     public Transform seagullTransform;
     private Vector3 cameraOffset;
+    private float followDistance = 5f;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,6 +16,7 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = seagullTransform.position - cameraOffset;
+        transform.position = seagullTransform.position - seagullTransform.forward * followDistance;
+        transform.LookAt(seagullTransform);
     }
 }

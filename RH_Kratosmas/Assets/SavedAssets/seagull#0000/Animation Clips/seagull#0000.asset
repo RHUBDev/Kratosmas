@@ -9,9 +9,7 @@ AnimatorOverrideController:
   m_Name: seagull#0000
   m_Controller: {fileID: 9100000, guid: 4dcab1c37bf10124cb56ae8d3632d356, type: 2}
   m_Clips:
-  - m_OriginalClip: {fileID: 7400000, guid: 5e4d05d8046f56848a4de16b35deef7e, type: 2}
-    m_OverrideClip: {fileID: 0}
-  - m_OriginalClip: {fileID: 7400000, guid: cbd44bc497bb06b49b8fb2adee24720e, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: d116946ae08f7aa4dbcbde348945da7f, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: 31ddec9e315d03b48a9d94ef33e67466, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: c7f38f34e4b219c4e95883af845e95cf, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: cbd44bc497bb06b49b8fb2adee24720e, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: d116946ae08f7aa4dbcbde348945da7f, type: 2}
