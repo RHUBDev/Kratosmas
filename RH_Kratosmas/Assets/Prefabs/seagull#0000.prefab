@@ -673,11 +673,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7361416040070935456}
-  - component: {fileID: 6248989479593816790}
-  - component: {fileID: 1609926014031572279}
-  - component: {fileID: 422545666483027044}
   - component: {fileID: 3079769051868390231}
   - component: {fileID: 5337510960840546826}
+  - component: {fileID: 1853047937592105267}
   m_Layer: 0
   m_Name: seagull#0000
   m_TagString: Untagged
@@ -694,87 +692,13 @@ Transform:
   m_GameObject: {fileID: 5650051296460064692}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: 0.26929674, z: 0}
+  m_LocalPosition: {x: 0, y: 10, z: 0}
   m_LocalScale: {x: 0.013332912, y: 0.013332912, z: 0.013332912}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7048114086663507858}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6248989479593816790
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5650051296460064692}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9825428b38833784e964dddab8ea5533, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  guid: seagull#0000
-  behaviour: fly
-  tags:
-  - feathers
-  - animal
-  - bird
-  - avian
-  - wings
-  - white
-  - ocean
-  - seagull
-  - albatross
-  habitats:
-  - forest
-  author: Poly by Google
-  entity: seagull
-  scales:
-  - label: height
-    value: 0.76
-  movement:
-  - label: fly_speed
-    value: 60
-  - label: Speed
-    value: 42
-  mass: 1
---- !u!114 &1609926014031572279
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5650051296460064692}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58c6f9b140a52a14881ec09eaebb66eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  behaviourTree: {fileID: 0}
-  validate: 1
-  blackboardOverrides: []
-  references:
-    version: 2
-    RefIds: []
---- !u!114 &422545666483027044
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5650051296460064692}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29066e7ff55418d418d09df148ca019e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speedScalar: 1.02
-  pathCreator: {fileID: 0}
-  behaviourType: 5
-  extents: {x: 0.4586472, y: 0.4259633, z: 0.4259633}
-  center: {x: 0.99999994, y: 0.26929668, z: -0.00000016529832}
-  jumpAnimationDuration: 0
-  jumpEndAnimationDuration: 0
 --- !u!136 &3079769051868390231
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -820,11 +744,26 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 3
+--- !u!114 &1853047937592105267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5650051296460064692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 869694c1061a9f145b8ee640e3364c40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 1459310163981213574}
+  fishprefab: {fileID: 1002872309090997903, guid: 4dc2479de20229d409094d2c69faab6b,
+    type: 3}
 --- !u!1 &5715769170304741671
 GameObject:
   m_ObjectHideFlags: 0

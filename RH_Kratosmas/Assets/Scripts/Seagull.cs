@@ -11,16 +11,18 @@ public class Seagull : MonoBehaviour
     private float maxYaw = 60f;
     private float yawMultiplier = 80f;
     private bool doneFlap = false;
+    public GameObject fishprefab;
+    private int numfish = 0;
+    private float fishRange = 30;
+    private float fishOffset = 0.12f;
 
     // Start is called before the first frame update
     void Start()
     {
         StartCoroutine(GetAnimator());
-        //animator = transform.GetChild(0).GetComponent<Animator>();
-        //animator.Play("fly");
-        //animator.SetBool("Flap", true);
     }
 
+    #region Update
     // Update is called once per frame
     void Update()
     {
@@ -33,12 +35,7 @@ public class Seagull : MonoBehaviour
         {
             animator.SetBool("InFlight", true);
             animator.SetBool("Flap", true);
-            /*if (!doneFlap)
-            {
-                doneFlap = true;
-                animator.SetBool("Flap", true);
-                animator.SetBool("EffortfulFlap", true);
-            }*/
+           
             if (vert == 0)
             {
                 float angle = Vector3.Angle(Vector3.up, transform.forward);
@@ -99,6 +96,7 @@ public class Seagull : MonoBehaviour
             transform.rotation = Quaternion.Euler(272, transform.eulerAngles.y, transform.eulerAngles.z);
         }
     }
+    #endregion
 
     IEnumerator GetAnimator()
     {
@@ -107,5 +105,26 @@ public class Seagull : MonoBehaviour
             yield return null;
         }
         animator = transform.GetChild(0).GetComponent<Animator>();
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.transform.CompareTag("Fish"))
+        {
+            RepositionFish(collision.collider.transform.parent);
+            AddFish();
+        }
+    }
+
+    void AddFish()
+    {
+        GameObject caughtfish = Instantiate(fishprefab, transform.position - transform.up * (0.27f + fishOffset * numfish) - transform.forward * 0.24f, transform.rotation * fishprefab.transform.rotation);
+        caughtfish.transform.SetParent(transform);
+        numfish++;
+    }
+
+    void RepositionFish(Transform fishParent)
+    {
+        fishParent.position = new Vector3(Random.Range(-fishRange, fishRange), 5f, 60f + Random.Range(-fishRange, fishRange));
     }
 }
