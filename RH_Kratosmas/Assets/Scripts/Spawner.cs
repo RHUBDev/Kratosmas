@@ -19,7 +19,7 @@ public class Spawner : MonoBehaviour
 
     void AddFish()
     {
-        Vector3 randomfishpos = new Vector3(Random.Range(-fishRange, fishRange), 5f, 60f + Random.Range(-fishRange, fishRange));
+        Vector3 randomfishpos = new Vector3(Random.Range(-fishRange, fishRange), 5f, 70f + Random.Range(-fishRange, fishRange));
         Quaternion randomRotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
         Instantiate(fishSpawnPrefab, randomfishpos, randomRotation, fishPool);
     }

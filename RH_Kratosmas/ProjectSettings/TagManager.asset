@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Fish
   - CaughtFish
+  - Camera2
   layers:
   - Default
   - TransparentFX

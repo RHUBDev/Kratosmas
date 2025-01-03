@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Fish : MonoBehaviour
 {
-    private float rotationSpeed = 40f;
+    private float rotationSpeed = 15f;
 
     private void Update()
     {

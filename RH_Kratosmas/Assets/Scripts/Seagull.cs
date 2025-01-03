@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.SceneManagement;
 
 public class Seagull : MonoBehaviour
 {
@@ -15,98 +17,150 @@ public class Seagull : MonoBehaviour
     private int numfish = 0;
     private float fishRange = 30;
     private float fishOffset = 0.12f;
+    private float speedMultiplier = 1f;
+    private float gametimer = 60f;
+    private float gametime = 60f;
+    public TMP_Text gameTimeText;
+    public TMP_Text endText;
+    public Transform hand;
+    public bool ended = false;
+    private float starttimer = 0f;
+    private float starttime = 2f;
+    private bool doneonce = false;
 
     // Start is called before the first frame update
     void Start()
     {
+        gametimer = gametime;
+        ended = false;
         StartCoroutine(GetAnimator());
+        transform.localPosition = new Vector3(-0.927f, 0.389f, 0.391f);
     }
 
     #region Update
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
-
-        float horiz = Input.GetAxis("Horizontal");
-        float vert = Input.GetAxis("Vertical");
-
-        if (animator)
+        if (starttimer < starttime)
         {
-            animator.SetBool("InFlight", true);
-            animator.SetBool("Flap", true);
-           
-            if (vert == 0)
-            {
-                float angle = Vector3.Angle(Vector3.up, transform.forward);
-                if (angle < 90)
-                {
-                    animator.SetBool("Flap", true);
-                    animator.SetBool("EffortfulFlap", true);
-                }
-                else if(angle >= 90)
-                {
-                    animator.SetBool("Flap", false);
-                    animator.SetBool("EffortfulFlap", false);
-                }
-            }
-            else if(vert > 0)
-            {
-                animator.SetBool("Flap", false);
-                animator.SetBool("EffortfulFlap", false);
-            }
-            else if (vert < 0)
-            {
-                animator.SetBool("Flap", true);
-                animator.SetBool("EffortfulFlap", true);
-            }
-        }
-
-        if (horiz > 0 && yaw < maxYaw)
-        {
-            yaw += Time.deltaTime * yawMultiplier;
-        }
-        else if(horiz < 0 && yaw > -maxYaw)
-        {
-            yaw -= Time.deltaTime * yawMultiplier;
+            starttimer += Time.deltaTime;
         }
         else
         {
-            if (yaw > -1 && yaw < 1)
+            if (!doneonce)
             {
-                yaw = 0f;
+                doneonce = true;
+                transform.SetParent(null);
+                GetComponent<CapsuleCollider>().isTrigger = false;
             }
-            else if (yaw > 0)
+            if (gametimer > 0)
             {
-                yaw -= Time.deltaTime * yawMultiplier;
+                gametimer -= Time.deltaTime;
+                transform.Translate(Vector3.forward * moveSpeed * speedMultiplier * Time.deltaTime);
+
+                float horiz = Input.GetAxis("Horizontal");
+                float vert = Input.GetAxis("Vertical");
+
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    if (speedMultiplier == 1)
+                    {
+                        speedMultiplier = 3;
+                    }
+                    else
+                    {
+                        speedMultiplier = 1;
+                    }
+                }
+
+                if (animator)
+                {
+                    animator.SetBool("InFlight", true);
+                    animator.SetBool("Flap", true);
+
+                    if (vert == 0)
+                    {
+                        float angle = Vector3.Angle(Vector3.up, transform.forward);
+                        if (angle < 90)
+                        {
+                            animator.SetBool("Flap", true);
+                            animator.SetBool("EffortfulFlap", true);
+                        }
+                        else if (angle >= 90)
+                        {
+                            animator.SetBool("Flap", false);
+                            animator.SetBool("EffortfulFlap", false);
+                        }
+                    }
+                    else if (vert > 0)
+                    {
+                        animator.SetBool("Flap", false);
+                        animator.SetBool("EffortfulFlap", false);
+                    }
+                    else if (vert < 0)
+                    {
+                        animator.SetBool("Flap", true);
+                        animator.SetBool("EffortfulFlap", true);
+                    }
+                }
+
+                if (horiz > 0 && yaw < maxYaw)
+                {
+                    yaw += Time.deltaTime * yawMultiplier;
+                }
+                else if (horiz < 0 && yaw > -maxYaw)
+                {
+                    yaw -= Time.deltaTime * yawMultiplier;
+                }
+                else
+                {
+                    if (yaw > -1 && yaw < 1)
+                    {
+                        yaw = 0f;
+                    }
+                    else if (yaw > 0)
+                    {
+                        yaw -= Time.deltaTime * yawMultiplier;
+                    }
+                    else if (yaw < 0)
+                    {
+                        yaw += Time.deltaTime * yawMultiplier;
+                    }
+                }
+                transform.rotation = Quaternion.Euler(transform.eulerAngles.x + (vert * turnSpeed * Time.deltaTime), transform.eulerAngles.y + ((yaw / maxYaw) * turnSpeed * Time.deltaTime), -yaw);
+                if (transform.eulerAngles.x > 88 && transform.eulerAngles.x < 100)
+                {
+                    transform.rotation = Quaternion.Euler(88, transform.eulerAngles.y, transform.eulerAngles.z);
+                }
+                else if (transform.eulerAngles.x < 272 && transform.eulerAngles.x > 260)
+                {
+                    transform.rotation = Quaternion.Euler(272, transform.eulerAngles.y, transform.eulerAngles.z);
+                }
             }
-            else if (yaw < 0)
+            else
             {
-                yaw += Time.deltaTime * yawMultiplier;
+                gametimer = 0;
+                if (!ended)
+                {
+                    ended = true;
+                    DoEndGame();
+                }
             }
         }
-        //transform.Rotate(vert * turnSpeed * Time.deltaTime, horiz * turnSpeed * Time.deltaTime, 0);
-        transform.rotation = Quaternion.Euler(transform.eulerAngles.x + (vert * turnSpeed * Time.deltaTime), transform.eulerAngles.y + ((yaw/maxYaw) * turnSpeed * Time.deltaTime), -yaw);
-        if(transform.eulerAngles.x > 88 && transform.eulerAngles.x < 100)
-        {
-            transform.rotation = Quaternion.Euler(88, transform.eulerAngles.y, transform.eulerAngles.z);
-        }
-        else if (transform.eulerAngles.x < 272 && transform.eulerAngles.x > 260)
-        {
-            transform.rotation = Quaternion.Euler(272, transform.eulerAngles.y, transform.eulerAngles.z);
-        }
+        gameTimeText.text = "" + Mathf.CeilToInt(gametimer).ToString("n0");
     }
     #endregion
 
     IEnumerator GetAnimator()
     {
-        while(transform.childCount < 1)
+        while (transform.childCount < 1)
         {
             yield return null;
         }
         animator = transform.GetChild(0).GetComponent<Animator>();
     }
 
+    #region CatchFish
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.transform.CompareTag("Fish"))
@@ -125,6 +179,41 @@ public class Seagull : MonoBehaviour
 
     void RepositionFish(Transform fishParent)
     {
-        fishParent.position = new Vector3(Random.Range(-fishRange, fishRange), 5f, 60f + Random.Range(-fishRange, fishRange));
+        fishParent.position = new Vector3(Random.Range(-fishRange, fishRange), 5f, 70f + Random.Range(-fishRange, fishRange));
     }
+    #endregion
+
+    #region EndGame
+    void DoEndGame()
+    {
+        if (hand.childCount == 0)
+        {
+            endText.text = "Another day with no food...\n(0 Fish)";
+        }
+        else if (hand.childCount == 1)
+        {
+            endText.text = "Give a man a fish, and you will feed him for a day...\n(1 Fish)";
+        }
+        else if (hand.childCount > 1 && hand.childCount < 4)
+        {
+            endText.text = "Give a man a helpful pet seagull, and you will feed him forever!\n(2-3 Fish)";
+        }
+        else if (hand.childCount >= 4)
+        {
+            endText.text = "Give a man the most awesome pet seagull ever, and...\n(4+ Fish)";
+        }
+    }
+
+    public void LoadWinScene()
+    {
+        if (hand.childCount >= 4)
+        {
+            SceneManager.LoadScene("WinScene");
+        }
+        else
+        {
+            SceneManager.LoadScene("MenuScene");
+        }
+    }
+    #endregion
 }
